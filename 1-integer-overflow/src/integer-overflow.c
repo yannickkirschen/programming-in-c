@@ -65,7 +65,7 @@ void iterUnsignedInt() {
 
 
         if (tmp == -1) {
-            printf("unsigned int overflow %d -> %d\n", tmp, i);
+            printf("unsigned int overflow %u -> %u\n", tmp, i);
             break;
         }
     }
