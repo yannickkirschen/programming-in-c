@@ -75,13 +75,11 @@ int main(int argc, char *argv[]) {
     iterChar();
     iterShort();
 
-    unsigned long start = (unsigned long) time(NULL);
+    time_t start = time(NULL);
     printf("Start int calculation: %lu\n", start);
     iterInt();
-    unsigned long end = (unsigned long) time(NULL);
+    time_t end = time(NULL);
     printf("End int calculation: %lu (time needed: %lu)\n", end, end - start);
 
     iterUnsignedInt();
 }
-
-
