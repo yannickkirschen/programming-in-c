@@ -62,4 +62,5 @@ build/bin
 .DS_Store
 
 # Project-specific
+*/build/bin/
 !build/deb/etc/ld.so.conf.d
