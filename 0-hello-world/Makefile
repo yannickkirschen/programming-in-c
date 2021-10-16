@@ -22,12 +22,9 @@ init:
 .PHONY: clean
 clean:
 	@$(rm) -rf $(BUILD_DIR)
-	@echo "Cleanup complete!"
 
 $(OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	@$(CC) $(CC_FLAGS) -c $< -o $@
-	@echo "Compiled "$<" successfully!"
 
 build: clean init $(OBJECTS)
 	@$(CC) -o $(BIN_DIR)/$(FINAL_NAME) $(OBJ_DIR)/*.o
-	@echo "Compiled $(BIN_DIR)/$(FINAL_NAME) successfully!"
