@@ -14,6 +14,10 @@ void printBinary(int i) {
 
     for (int c = sizeof(int) * 8 - 1; c >= 0; c--) {
         printf("%d", i >> c & 1);
+
+        if (c % 8 == 0) {
+            printf(" ");
+        }
     }
 
     printf("\n");
@@ -24,6 +28,10 @@ void printUnsignedBinary(unsigned int i) {
 
     for (int c = sizeof(int) * 8 - 1; c >= 0; c--) {
         printf("%d", i >> c & 1);
+
+        if (c % 8 == 0) {
+            printf(" ");
+        }
     }
 
     printf("\n");
