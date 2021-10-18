@@ -8,12 +8,11 @@
 //          are presented in binary format
 
 #include <stdio.h>
-#include <stdlib.h>
 
 void printBinary(int i) {
     printf("Binary representation of %i: ", i);
 
-    for (int c = 31; c >= 0; c--) {
+    for (int c = sizeof(int) * 8 - 1; c >= 0; c--) {
         printf("%d", i >> c & 1);
     }
 
@@ -23,7 +22,7 @@ void printBinary(int i) {
 void printUnsignedBinary(unsigned int i) {
     printf("Binary representation of %u: ", i);
 
-    for (int c = 31; c >= 0; c--) {
+    for (int c = sizeof(int) * 8 - 1; c >= 0; c--) {
         printf("%d", i >> c & 1);
     }
 
