@@ -5,7 +5,6 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 
 /**
  * This will check two strings on equality based on their characters.
