@@ -12,8 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char vowels[] = {'a', 'e', 'i', 'o', 'u'};
-int vowelsCount = 5;
+const char vowels[] = {'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'};
+const int vowelsCount = 10;
 
 bool contains(const char *array, char c) {
     int i = 0;
