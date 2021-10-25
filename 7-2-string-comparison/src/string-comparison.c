@@ -28,13 +28,9 @@ bool equals(const char *s1, const char *s2) {
         }
 
         i++;
-    } while (c1 != '\0' && c2 != '\0');
+    } while (c1 && c2);
 
-    if (c1 == '\0' && c2 == '\0') {
-        return true;
-    }
-
-    return false;
+    return !c1 && !c2;
 }
 
 /**
@@ -52,8 +48,8 @@ bool equals(const char *s1, const char *s2) {
 int compare(const char *s1, const char *s2) {
     int i = 0;
 
-    char c1;
-    char c2;
+    unsigned char c1;
+    unsigned char c2;
 
     do {
         c1 = s1[i];
@@ -66,22 +62,18 @@ int compare(const char *s1, const char *s2) {
         }
 
         i++;
-    } while (c1 != '\0' && c2 != '\0');
+    } while (c1 && c2);
 
     // Both strings are the same length.
     // As we made it here, we know they're equal.
-    if (c1 == '\0' && c2 == '\0') {
+    if (!c1 && !c2) {
         return 0;
     }
 
     // When the first string reached its end and the second doesn't, we know the
-    // second is longer and as we masde it here, it has to be ordered after the
+    // second is longer and as we made it here, it has to be ordered after the
     // first one.
-    if (c1 == '\0' && c2 != '\0') {
-        return 1;
-    } else {
-        return -1;
-    }
+    return c2 ? 1 : -1;
 }
 
 int main() {
