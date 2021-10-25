@@ -45,9 +45,13 @@ void matrixSum(float m1[3][3], float m2[3][3]) {
 }
 
 void matrixProduct(float m1[3][3], float m2[3][3]) {
-    float product[3][3] = {{0, 0, 0},
-                           {0, 0, 0},
-                           {0, 0, 0}};
+    float product[3][3];
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            product[i][j] = 0;
+        }
+    }
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
