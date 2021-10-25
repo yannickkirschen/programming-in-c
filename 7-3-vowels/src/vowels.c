@@ -54,9 +54,10 @@ char *removeVowels(char *txt) {
                 txt[j] = txt[j + 1];
                 j++;
             }
+            txt[j] = 0;
+        } else {
+            i++;
         }
-
-        i++;
     }
 
     return txt;
