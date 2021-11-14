@@ -23,18 +23,22 @@ int chooseABurger() {
 
     switch (size) {
         case 's':
+        case 'S':
             height = 1;
             price = 2.5f;
             break;
         case 'l':
+        case 'L':
             height = 4;
             price = 5.9f;
             break;
         case 'x':
+        case 'X':
             height = 6;
             price = 8.5f;
             break;
         case 'q':
+        case 'Q':
             return 0;
         default:  // 'm'
             height = 2;
@@ -45,16 +49,18 @@ int chooseABurger() {
 
     while (height--) {
         switch (specials) {
-            case 'c':
-                printf(" ------ \n");
-                break;
             case 'v':
+            case 'V':
                 printf("(xxxxxx)\n");
                 break;
             case 'f':
+            case 'F':
                 printf("(~~~~~~)\n");
                 break;
-            default: // 'r'
+            case 'c':
+            case 'C':
+                printf("(------)\n");
+            default: // 'r' / 'R'
                 printf("(mmmmmm)\n");
         }
     }
