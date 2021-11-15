@@ -17,37 +17,30 @@ void gol_print_canvas(struct GolCanvas *canvas) {
     }
 }
 
-GolCanvas *gol_initialize_canvas(int n) {
+GolCanvas *gol_initialize_canvas(int length, int height) {
     GolCanvas *canvas = malloc(sizeof(GolCanvas));
-    canvas->x = 50;
-    canvas->y = 30;
-
-    int aliveCells[n];
-    size_t mod = canvas->x * canvas->y;
-
-    srand(time(0));
-    for (int i = 0; i < n; i++) {
-        int r;
-        do {
-            r = rand() % mod;
-        } while (arrayContains(aliveCells, r, n));
-
-        aliveCells[i] = r;
-    }
+    canvas->x = length;
+    canvas->y = height;
+    canvas->historyLength = 0;
+    canvas->firstHistory = NULL;
+    canvas->lastHistory = NULL;
 
     for (int y = 0; y < canvas->y; y++) {
         for (int x = 0; x < canvas->x; x++) {
-            canvas->data[x][y] = arrayContains(aliveCells, x * y, n) ? 1 : 0;
+            canvas->data[x][y] = rand() % 5 == 1 ? 1 : 0;
         }
     }
 
     return canvas;
 }
 
-GolCanvas *gol_initialize_glider() {
+GolCanvas *gol_initialize_glider(int length, int height) {
     GolCanvas *canvas = malloc(sizeof(GolCanvas));
-    canvas->x = 50;
-    canvas->y = 30;
+    canvas->x = length;
+    canvas->y = height;
+    canvas->historyLength = 0;
+    canvas->firstHistory = NULL;
+    canvas->lastHistory = NULL;
 
     for (int y = 0; y < canvas->y; y++) {
         for (int x = 0; x < canvas->x; x++) {
@@ -64,60 +57,66 @@ GolCanvas *gol_initialize_glider() {
     return canvas;
 }
 
+int calculateNeighbours(struct GolCanvas *canvas, int x, int y) {
+    int neighbours = 0;
+
+    // Right
+    if (x + 1 < canvas->x && canvas->data[x + 1][y]) {
+        neighbours++;
+    }
+
+    // Left
+    if (x - 1 < canvas->x && canvas->data[x - 1][y]) {
+        neighbours++;
+    }
+
+    // Top
+    if (y + 1 < canvas->y && canvas->data[x][y + 1]) {
+        neighbours++;
+    }
+
+    // Bottom
+    if (y - 1 < canvas->y && canvas->data[x][y - 1]) {
+        neighbours++;
+    }
+
+    // Top Left
+    if (x - 1 < canvas->x &&
+        y + 1 < canvas->y &&
+        canvas->data[x - 1][y + 1]) {
+        neighbours++;
+    }
+
+    // Top Right
+    if (x + 1 < canvas->x &&
+        y + 1 < canvas->y &&
+        canvas->data[x + 1][y + 1]) {
+        neighbours++;
+    }
+
+    // Bottom Left
+    if (x - 1 < canvas->x &&
+        y - 1 < canvas->y &&
+        canvas->data[x - 1][y - 1]) {
+        neighbours++;
+    }
+
+    // Bottom Left
+    if (x + 1 < canvas->x &&
+        y - 1 < canvas->y &&
+        canvas->data[x + 1][y - 1]) {
+        neighbours++;
+    }
+
+    return neighbours;
+}
+
 void gol_next_generation(GolCanvas *canvas) {
     int data[canvas->x][canvas->y];
 
     for (int y = 0; y < canvas->y; y++) {
         for (int x = 0; x < canvas->x; x++) {
-            int neighbours = 0;
-
-            // Right
-            if (x + 1 < canvas->x && canvas->data[x + 1][y]) {
-                neighbours++;
-            }
-
-            // Left
-            if (x - 1 < canvas->x && canvas->data[x - 1][y]) {
-                neighbours++;
-            }
-
-            // Top
-            if (y + 1 < canvas->y && canvas->data[x][y + 1]) {
-                neighbours++;
-            }
-
-            // Bottom
-            if (y - 1 < canvas->y && canvas->data[x][y - 1]) {
-                neighbours++;
-            }
-
-            // Top Left
-            if (x - 1 < canvas->x &&
-                y + 1 < canvas->y &&
-                canvas->data[x - 1][y + 1]) {
-                neighbours++;
-            }
-
-            // Top Right
-            if (x + 1 < canvas->x &&
-                y + 1 < canvas->y &&
-                canvas->data[x + 1][y + 1]) {
-                neighbours++;
-            }
-
-            // Bottom Left
-            if (x - 1 < canvas->x &&
-                y - 1 < canvas->y &&
-                canvas->data[x - 1][y - 1]) {
-                neighbours++;
-            }
-
-            // Bottom Left
-            if (x + 1 < canvas->x &&
-                y - 1 < canvas->y &&
-                canvas->data[x + 1][y - 1]) {
-                neighbours++;
-            }
+            int neighbours = calculateNeighbours(canvas, x, y);
 
             if (!canvas->data[x][y] && neighbours == 3) { // reproduction
                 data[x][y] = 1;
@@ -137,5 +136,56 @@ void gol_next_generation(GolCanvas *canvas) {
         for (int x = 0; x < canvas->x; x++) {
             canvas->data[x][y] = data[x][y];
         }
+    }
+}
+
+int gol_hash(struct GolCanvas *canvas) {
+    int hash = 0;
+
+    for (int y = 0; y < canvas->y; y++) {
+        for (int x = 0; x < canvas->x; x++) {
+            if (canvas->data[x][y]) {
+                hash += (x + 1) * (10 * y + 7);
+            }
+        }
+    }
+
+    return hash;
+}
+
+void gol_add_to_history(GolCanvas *canvas, int hash, int threshold) {
+    if (canvas->historyLength >= threshold) {
+        GolHistory *tmp = canvas->firstHistory;
+        canvas->firstHistory = tmp->next;
+
+        if (canvas->firstHistory == NULL) {
+            canvas->lastHistory = NULL;
+        }
+
+        free(tmp);
+        canvas->historyLength--;
+    }
+
+    GolHistory *history = malloc(sizeof(GolHistory));
+    history->hash = hash;
+
+    if (canvas->firstHistory == NULL) {
+        canvas->firstHistory = history;
+        canvas->lastHistory = history;
+        history->next = NULL;
+    } else {
+        canvas->lastHistory->next = history;
+        canvas->lastHistory = history;
+    }
+
+    canvas->historyLength++;
+
+    printf("\n\n");
+    GolHistory *h = canvas->firstHistory;
+    int i = 0;
+    while (h) {
+        printf("%i) Hash: %i\n", ++i, h->hash);
+
+        h = h->next;
     }
 }
