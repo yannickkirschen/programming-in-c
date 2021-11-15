@@ -5,7 +5,7 @@
 #include "../arrays/arrays.h"
 #include "game-of-life.h"
 
-void printCanvas(struct Canvas *canvas) {
+void gol_print_canvas(struct GolCanvas *canvas) {
     system("clear"); // Linux/UNIX only!
 
     for (int y = 0; y < canvas->y; y++) {
@@ -17,8 +17,8 @@ void printCanvas(struct Canvas *canvas) {
     }
 }
 
-Canvas *initializeCanvas(int n) {
-    Canvas *canvas = malloc(sizeof(Canvas));
+GolCanvas *gol_initialize_canvas(int n) {
+    GolCanvas *canvas = malloc(sizeof(GolCanvas));
     canvas->x = 50;
     canvas->y = 30;
 
@@ -44,8 +44,8 @@ Canvas *initializeCanvas(int n) {
     return canvas;
 }
 
-Canvas *initializeGlider() {
-    Canvas *canvas = malloc(sizeof(Canvas));
+GolCanvas *gol_initialize_glider() {
+    GolCanvas *canvas = malloc(sizeof(GolCanvas));
     canvas->x = 50;
     canvas->y = 30;
 
@@ -64,7 +64,7 @@ Canvas *initializeGlider() {
     return canvas;
 }
 
-void nextGeneration(Canvas *canvas) {
+void gol_next_generation(GolCanvas *canvas) {
     int data[canvas->x][canvas->y];
 
     for (int y = 0; y < canvas->y; y++) {

@@ -3,19 +3,19 @@
 
 #include <stdbool.h>
 
-typedef struct Canvas {
+typedef struct GolCanvas {
     size_t x;
     size_t y;
 
     int data[50][30];
-} Canvas;
+} GolCanvas;
 
-void printCanvas(struct Canvas *);
+void gol_print_canvas(struct GolCanvas *);
 
-Canvas *initializeCanvas(int);
+GolCanvas *gol_initialize_canvas(int);
 
-Canvas *initializeGlider();
+GolCanvas *gol_initialize_glider();
 
-void nextGeneration(Canvas *);
+void gol_next_generation(GolCanvas *);
 
 #endif // game_of_life_h
