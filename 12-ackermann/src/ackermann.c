@@ -7,27 +7,31 @@ long ackermann(long m, long n) {
 }
 
 long verbose_ackermann(long m, long n) {
-    static int depth = 1;
+    static int depth = 0;
     static int totalCounter = 0;
+
+    depth++;
     totalCounter++;
 
+    printf("%i) [depth=%i] m=%ld  n=%ld  ", totalCounter, depth, m, n);
     for (int i = 0; i < depth; i++) {
         printf(".");
     }
-    printf("%i) m=%ld  n=%ld\n", totalCounter, m, n);
+    printf("\n");
 
+    long a;
     if (m == 0) {
-        depth--;
-        return n + 1;
+        a = n + 1;
     } else {
         if (n == 0) {
-            depth++;
-            return verbose_ackermann(m - 1, 1);
+            a = verbose_ackermann(m - 1, 1);
         } else {
-            depth++;
-            return verbose_ackermann(m - 1, verbose_ackermann(m, -1));
+            a = verbose_ackermann(m - 1, verbose_ackermann(m, n - 1));
         }
     }
+
+    depth--;
+    return a;
 }
 
 int main(int argc, char *argv[]) {
