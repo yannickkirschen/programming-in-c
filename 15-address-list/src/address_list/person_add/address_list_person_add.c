@@ -67,12 +67,20 @@ void address_list_person_add(ArrayList *list) {
     }
 
     Address *address = malloc(sizeof(Address));
+    if (address == NULL) {
+        return;
+    }
+
     strcpy(address->street1, street1);
     strcpy(address->street2, street2);
     strcpy(address->zip, zip);
     strcpy(address->city, city);
 
     Person *person = malloc(sizeof(Person));
+    if (person == NULL) {
+        return;
+    }
+
     strcpy(person->firstName, firstName);
     strcpy(person->lastName, lastName);
     person->sex = sex;

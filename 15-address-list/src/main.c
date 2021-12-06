@@ -35,7 +35,6 @@ int main() {
                 utils_input_error();
                 break;
             default:
-                continue;
         }
     }
 }

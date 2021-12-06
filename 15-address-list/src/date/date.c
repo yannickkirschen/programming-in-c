@@ -31,6 +31,10 @@ Date *string_to_date(const char s[11]) {
     int y = (int) strtol(year, NULL, 10);
 
     Date *date = malloc(sizeof(Date));
+    if (date == NULL) {
+        return NULL;
+    }
+
     date->day = d;
     date->month = m;
     date->year = y;
