@@ -1,0 +1,3 @@
+[submodule "libcollection"]
+	path = libcollection
+	url = https://github.com/yannickkirschen/libcollection
